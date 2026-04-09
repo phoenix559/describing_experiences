@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giving Personal Information - ESL 404/412</title>
+<style>
+    :root {
+        --box-fill: #CCA192;
+        --box-fill-light: #FAF3F1;
+        --border-accent: #A47D6F;
+        --ada-text: #523227;
+        --bg-page: #FCF9F8;
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: var(--bg-page);
+        color: var(--ada-text);
+        margin: 0;
+        padding: 0;
+    }
+    #lock-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: var(--ada-text); color: white; 
+        display: flex; flex-direction: column; align-items: center; 
+        justify-content: center; text-align: center; padding: 20px; 
+        z-index: 9999; box-sizing: border-box;
+    }
+    .btn-primary {
+        background-color: var(--border-accent); color: white; 
+        padding: 12px 30px; border: none; border-radius: 8px; 
+        font-weight: bold; cursor: pointer; font-size: 16px;
+        transition: background-color 0.2s;
+    }
+    .btn-primary:hover {
+        background-color: #38221B;
+    }
+    #main-content {
+        display: none; padding: 20px; max-width: 900px; margin: 0 auto;
+    }
+    header {
+        background: var(--box-fill-light); border: 1px solid var(--border-accent);
+        border-radius: 15px; padding: 20px; text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;
+    }
+    header h1 { margin: 0 0 10px 0; color: var(--ada-text); }
+    header p { margin: 0; font-weight: bold; }
+    .section {
+        background: white; border: 1px solid var(--border-accent);
+        border-radius: 15px; padding: 20px; margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    h2 { color: var(--border-accent); border-bottom: 2px solid var(--box-fill-light); padding-bottom: 5px; }
+    /* Text Message Styling */
+    .dialogue { display: flex; flex-direction: column; gap: 10px; margin-top: 15px;}
+    .msg { max-width: 70%; padding: 12px 16px; border-radius: 20px; display: flex; align-items: center; gap: 10px; }
+    .msg.speaker-a { background: var(--box-fill); color: white; align-self: flex-start; border-bottom-left-radius: 5px; }
+    .msg.speaker-b { background: var(--box-fill-light); color: var(--ada-text); align-self: flex-end; border-bottom-right-radius: 5px; border: 1px solid var(--border-accent);}
+    .avatar { font-size: 1.5rem; }
+    /* Auto Grading */
+    .interactive-input {
+        padding: 5px; border: 1px solid var(--border-accent); border-radius: 5px; font-family: 'Segoe UI', sans-serif;
+    }
+    .correct { background-color: #15803d !important; color: white; border-color: #15803d; }
+    .incorrect { background-color: #b91c1c !important; color: white; border-color: #b91c1c; }
+    /* Timer */
+    .timer-container {
+        background: var(--ada-text); color: white; text-align: center;
+        border-radius: 15px; padding: 20px; margin-bottom: 20px;
+        position: sticky; top: 10px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .time-display { font-family: monospace; font-size: 3rem; margin: 10px 0; }
+    .timer-btns button {
+        background: var(--box-fill); border: none; padding: 8px 15px;
+        color: white; border-radius: 5px; margin: 5px; cursor: pointer; font-size: 1rem;
+    }
+    .timer-btns button:hover { background: var(--border-accent); }
+    /* Warm-up List */
+    .warmup-input-group { display: flex; gap: 10px; margin-top: 15px; }
+    .warmup-input-group input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-accent); font-family: 'Segoe UI', sans-serif; font-size: 1rem; }
+    .warmup-input-group button { padding: 10px 20px; background: var(--border-accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background-color 0.2s;}
+    .warmup-input-group button:hover { background: #38221B; }
+    #warmup-list { list-style: none; padding: 0; margin-top: 15px; }
+    #warmup-list li { background: var(--box-fill-light); padding: 10px 15px; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-accent); }
+    #warmup-list button { background: #b91c1c; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+    
+    /* Task 2 Answer Reveals */
+    .task2-blank { color: var(--border-accent); font-weight: bold; letter-spacing: 1px; }
+    .task2-revealed { color: #15803d; font-weight: bold; background: #f0fdf4; padding: 2px 5px; border-radius: 4px; transition: background-color 0.3s; }
+</style>
+</head>
+<body>
+
+<div id="lock-screen">
+    <h1 style="margin: 0 0 5px 0; font-size: 2.5rem; text-align: center; color: #FFFFFF;">Giving Personal Information</h1>
+    <h2 style="margin: 0 0 5px 0; font-size: 1.2rem; font-weight: normal; color: var(--box-fill);">ESL 404/412 Interactive Lesson</h2>
+    <p style="margin: 0 0 25px 0; font-size: 0.9rem; font-style: italic; color: var(--box-fill-light);">Teacher Presentation View</p>
+    <p style="margin-bottom: 20px; color: #FFFFFF;">Please enter the teacher access code to begin:</p>
+    <input type="password" id="pin-input" placeholder="Passcode" style="padding: 12px; border-radius: 8px; border: none; font-size: 18px; width: 200px; text-align: center; margin-bottom: 20px; color: #333;">
+    <button onclick="checkPin()" class="btn-primary">Enter Lesson</button>
+    <p id="pin-error" style="color: var(--box-fill); margin-top: 15px; display: none;">Incorrect code. Please try again.</p>
+</div>
+
+<div id="main-content">
+    <div class="timer-container">
+        <div>Teacher Timer</div>
+        <div class="time-display" id="timer-display">00:00</div>
+        <div class="timer-btns">
+            <button onclick="setTimer(60)">+1 Min</button>
+            <button onclick="setTimer(240)">4 Min</button>
+            <button onclick="setTimer(600)">10 Min</button>
+            <button onclick="startTimer()">Start</button>
+            <button onclick="pauseTimer()">Pause</button>
+            <button onclick="resetTimer()">Reset</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Giving Personal Information</h1>
+        <p>Level: High Beg | ESL 404/412</p>
+    </header>
+
+    <div class="section">
+        <h2>Warm-Up: Birthday vs. Birthdate</h2>
+        <p>Your <strong>birthday</strong> is the anniversary of your birth (e.g., May 20). Your <strong>birthdate</strong> (or date of birth) is the day and year when you were born (e.g., May 20, 1983).</p>
+        <p><em>Brainstorming Activity:</em> Find the birthdate of one famous person and share it.</p>
+        <div class="warmup-input-group">
+            <input type="text" id="warmup-input" placeholder="e.g. Brad Pitt 12/18/1963">
+            <button onclick="addWarmupEntry()">Add</button>
+        </div>
+        <ul id="warmup-list"></ul>
+    </div>
+
+    <div class="section">
+        <h2>Common Questions</h2>
+        <p>Listen to your teacher say these common questions. Practice saying them out loud.</p>
+        <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+            <source src="Giving-Personal-Information- Listen and Repeat.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <ul style="line-height: 1.8; font-size: 1.1rem; color: var(--ada-text);">
+            <li>Can I get some information/info?</li>
+            <li>What's your first name?</li>
+            <li>What's your last name?</li>
+            <li>Do you have a middle name?</li>
+            <li>What's your home number?</li>
+            <li>What's your cell number?</li>
+            <li>What's your work number?</li>
+            <li>What's your birthdate?</li>
+            <li>What's your email address?</li>
+            <li>Is this your current mailing address?</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Dialogue Practice</h2>
+        <p>Practice with a partner. Then change the personal information to your own information.</p>
+        
+        <!-- Dialogue 1 -->
+        <div style="margin-bottom: 30px;">
+            <h3 style="margin-top: 0; color: var(--border-accent);">Dialogue 1: Names</h3>
+            <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+                <source src="Giving-Personal-Information-1.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="dialogue">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Can I have your last name, please?</div>
+                <div class="msg speaker-b">It's Williams. W-I-L-L-I-A-M-S. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> And your first name?</div>
+                <div class="msg speaker-b">Corey. C-O-R-E-Y. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Do you have a middle name?</div>
+                <div class="msg speaker-b">No, I don't. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+
+        <!-- Dialogue 2 -->
+        <div style="margin-bottom: 30px;">
+            <h3 style="margin-top: 0; color: var(--border-accent);">Dialogue 2: Phone Numbers & Birthdates</h3>
+            <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+                <source src="Giving-Personal-Information-2.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="dialogue">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Can I have your phone number, please?</div>
+                <div class="msg speaker-b">Sure. It's 555-222-7798. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> 555-222-7798. Is that your home number?</div>
+                <div class="msg speaker-b">That's my cell. I don't have a home phone. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Okay. Do you have a work number?</div>
+                <div class="msg speaker-b">Yes. It's 414-990-4878. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> And your birthdate is May 5, 1987, right?</div>
+                <div class="msg speaker-b">That's correct. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+
+        <!-- Dialogue 3 -->
+        <div style="margin-bottom: 10px;">
+            <h3 style="margin-top: 0; color: var(--border-accent);">Dialogue 3: Addresses</h3>
+            <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+                <source src="Giving-Personal-Information-3.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="dialogue">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Is this your current mailing address?</div>
+                <div class="msg speaker-b">No, we moved. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> What's your new address?</div>
+                <div class="msg speaker-b">My address is 45 Arrow Drive. Unit 88. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Is that in Buffalo?</div>
+                <div class="msg speaker-b">Yes. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> What's your zip code?</div>
+                <div class="msg speaker-b">My zip code is 14215. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Great. And is your email address still coreywilliams@mailme.com?</div>
+                <div class="msg speaker-b">That's right. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Correct Info?</h2>
+        <p>Sometimes people already have your information. They may check to make sure it's still correct.</p>
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;">
+            <div class="dialogue" style="margin-top: 0;">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> And your birthdate is May 5, 1987, right?</div>
+                <div class="msg speaker-b">That's correct. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+        <p>You can answer in a few ways:</p>
+        <ul style="color: var(--ada-text); font-weight: bold;">
+            <li>That's right.</li>
+            <li>Right.</li>
+            <li>That's correct.</li>
+            <li>You got it.</li>
+            <li>Yes.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>A. Complete the Dialogue</h2>
+        <p>Select the correct word to complete the conversation.</p>
+        <p><strong>A:</strong> I need your <select class="interactive-input" data-answer="phone number" onchange="checkAnswer(this)">
+            <option value="">...</option>
+            <option value="phone number">phone number</option>
+            <option value="birthdate">birthdate</option>
+        </select>.</p>
+        <p><strong>B:</strong> It's 334-889-0087.</p>
+        <p><strong>A:</strong> Is that your home number or your <select class="interactive-input" data-answer="cell" onchange="checkAnswer(this)">
+            <option value="">...</option>
+            <option value="email">email</option>
+            <option value="cell">cell</option>
+        </select> number?</p>
+        <p><strong>B:</strong> That's my cell. I don't have a <select class="interactive-input" data-answer="home" onchange="checkAnswer(this)">
+            <option value="">...</option>
+            <option value="home">home</option>
+            <option value="zip">zip</option>
+        </select> number.</p>
+        <p><strong>A:</strong> Okay. What's your mailing <select class="interactive-input" data-answer="address" onchange="checkAnswer(this)">
+            <option value="">...</option>
+            <option value="address">address</option>
+            <option value="middle name">middle name</option>
+        </select>?</p>
+    </div>
+
+    <div class="section">
+        <h2>B. Writing Practice</h2>
+        <p>Answer the following questions with your own personal information. Write complete sentences.</p>
+        <button onclick="document.getElementById('practice-b-answers').style.display='block'" class="btn-primary" style="margin-bottom: 15px;">Uncover Example</button>
+        <div id="practice-b-answers" style="display: none; background: var(--box-fill-light); padding: 15px; border-radius: 10px; border: 1px solid var(--border-accent);">
+            <p><strong>1. What's your last name?</strong><br> My last name is Giant.</p>
+            <p><strong>2. Do you have a middle name?</strong><br> No, I don't have a middle name.</p>
+            <p><strong>3. What's your cell number?</strong><br> My cell number is (559) 688-3000.</p>
+            <p><strong>4. What's your birthdate?</strong><br> My birthdate is January 15, 2013.</p>
+            <p><strong>5. What's your mailing address?</strong><br> My mailing address is 4999 E Bardsley Ave, Tulare, CA 93274.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Listening Practice</h2>
+        <p>Listen to each question. Choose the correct response.</p>
+        <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+            <source src="giving-personal-information-listening.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <ol style="line-height: 1.8;">
+            <li style="margin-bottom: 15px;">What's your zip code? <br>
+                <select class="interactive-input" data-answer="b" onchange="checkAnswer(this)">
+                    <option value="">Select...</option>
+                    <option value="a">a) 467-990-8909.</option>
+                    <option value="b">b) 29575.</option>
+                    <option value="c">c) 57 Hero Lane.</option>
+                </select>
+            </li>
+            <li style="margin-bottom: 15px;">What's your last name? <br>
+                <select class="interactive-input" data-answer="c" onchange="checkAnswer(this)">
+                    <option value="">Select...</option>
+                    <option value="a">a) Yes, it's Mike.</option>
+                    <option value="b">b) No, I don't.</option>
+                    <option value="c">c) Smythe.</option>
+                </select>
+            </li>
+            <li style="margin-bottom: 15px;">Do you have a home phone? <br>
+                <select class="interactive-input" data-answer="a" onchange="checkAnswer(this)">
+                    <option value="">Select...</option>
+                    <option value="a">a) No, we don't.</option>
+                    <option value="b">b) That's my work number.</option>
+                    <option value="c">c) 27.</option>
+                </select>
+            </li>
+            <li style="margin-bottom: 15px;">That's Carl with a C, right? <br>
+                <select class="interactive-input" data-answer="c" onchange="checkAnswer(this)">
+                    <option value="">Select...</option>
+                    <option value="a">a) Yes, I do.</option>
+                    <option value="b">b) Yes, my last name.</option>
+                    <option value="c">c) That's correct.</option>
+                </select>
+            </li>
+            <li style="margin-bottom: 15px;">Can I get your email address? <br>
+                <select class="interactive-input" data-answer="b" onchange="checkAnswer(this)">
+                    <option value="">Select...</option>
+                    <option value="a">a) 77 1st Ave.</option>
+                    <option value="b">b) It's erin889@telecall.ca.</option>
+                    <option value="c">c) Yes, I did.</option>
+                </select>
+            </li>
+            <li style="margin-bottom: 15px;">Can I get some information? <br>
+                <select class="interactive-input" data-answer="a" onchange="checkAnswer(this)">
+                    <option value="">Select...</option>
+                    <option value="a">a) Of course.</option>
+                    <option value="b">b) Yes, that's my name.</option>
+                    <option value="c">c) No, you didn't.</option>
+                </select>
+            </li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Spelling</h2>
+        <p>Are you giving personal information over the phone or in a loud place? It's useful to spell out difficult or important words. Use familiar nouns or the English Phonetic Spelling Alphabet.</p>
+        <div class="dialogue">
+            <div class="msg speaker-a"><span class="avatar">👩🏽</span> What's your last name?</div>
+            <div class="msg speaker-b">Chia. <span class="avatar">👨🏻</span></div>
+            <div class="msg speaker-a"><span class="avatar">👩🏽</span> Can you spell that for me, please?</div>
+            <div class="msg speaker-b">Yep. It's C as in Charlie, H as in Hotel, I as in India, A as in Alfa. <span class="avatar">👨🏻</span></div>
+            <div class="msg speaker-a"><span class="avatar">👩🏽</span> C-H-I-A?</div>
+            <div class="msg speaker-b">That's correct. <span class="avatar">👨🏻</span></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Review: Task 1</h2>
+        <p>Write five personal information questions.</p>
+        <div class="warmup-input-group">
+            <input type="text" id="task1-input" placeholder="e.g. What is your email address?">
+            <button onclick="addTask1Entry()">Add</button>
+        </div>
+        <ul id="task1-list" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
+    </div>
+
+    <div class="section">
+        <h2>Review: Task 2</h2>
+        <p>Complete the dialogue that takes place over the phone. <em>(Click the button to reveal potential answers one by one)</em></p>
+        <button onclick="revealNextTask2Answer()" id="task2-reveal-btn" class="btn-primary" style="margin-bottom: 15px;">Reveal Next Answer</button>
+        <button onclick="resetTask2Answers()" id="task2-reset-btn" class="btn-primary" style="margin-bottom: 15px; background-color: #b91c1c; display: none;">Reset Answers</button>
+        <div style="background: white; padding: 20px; border-radius: 15px; border: 1px solid var(--box-fill); font-size: 1.1rem; line-height: 1.8;">
+            <p><strong>A:</strong> What's your first <span class="task2-answer-item task2-blank" data-answer="name">________</span>?</p>
+            <p><strong>B:</strong> Juan.</p>
+            <p><strong>A:</strong> Can you spell that, please?</p>
+            <p><strong>B:</strong> <span class="task2-answer-item task2-blank" data-answer="J-U-A-N / J as in Juliet, U as in Uniform, A as in Alfa, N as in November">________</span></p>
+            <p><strong>A:</strong> Can I get your <span class="task2-answer-item task2-blank" data-answer="phone number / cell number">________</span> please?</p>
+            <p><strong>B:</strong> Sure. It's 889-098-7890.</p>
+            <p><strong>A:</strong> Thanks. And I need <span class="task2-answer-item task2-blank" data-answer="your email">________</span> address.</p>
+            <p><strong>B:</strong> It's juan@mailnow.com.</p>
+            <p><strong>A:</strong> Okay. Lastly, I need your <span class="task2-answer-item task2-blank" data-answer="birthdate">________</span>.</p>
+            <p><strong>B:</strong> September 19.</p>
+            <p><strong>A:</strong> 1994?</p>
+            <p><strong>B:</strong> You <span class="task2-answer-item task2-blank" data-answer="got">________</span> it.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Review: Task 3 (Role-Play Script)</h2>
+        <p><strong>Instructions:</strong> Create a script for an interaction involving giving and asking for personal information (like a salesperson and a customer). Spell out at least one important word.</p>
+        <p><em>Homework:</em> Later, record yourself practicing the role-play with a family member or friend.</p>
+    </div>
+</div>
+
+<script>
+    // Lock Screen Logic
+    function checkPin() {
+        const pin = document.getElementById('pin-input').value;
+        if(pin === '412') {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            document.getElementById('pin-error').style.display = 'block';
+            document.getElementById('pin-input').value = ''; // clear input on failure
+        }
+    }
+
+    // Allow pressing Enter to submit passcode
+    document.getElementById('pin-input').addEventListener('keypress', function(e) { 
+        if(e.key === 'Enter') checkPin(); 
+    });
+
+    // Warm-up Entry Logic
+    function addWarmupEntry() {
+        const input = document.getElementById('warmup-input');
+        const val = input.value.trim();
+        if(!val) return;
+        
+        const list = document.getElementById('warmup-list');
+        const li = document.createElement('li');
+        
+        const textSpan = document.createElement('span');
+        textSpan.textContent = val;
+        
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Remove';
+        delBtn.onclick = function() { li.remove(); };
+        
+        li.appendChild(textSpan);
+        li.appendChild(delBtn);
+        list.appendChild(li);
+        
+        input.value = ''; // clear input
+    }
+
+    // Allow pressing Enter to submit warm-up entry
+    document.getElementById('warmup-input').addEventListener('keypress', function(e) { 
+        if(e.key === 'Enter') addWarmupEntry(); 
+    });
+
+    // Task 1 Entry Logic
+    function addTask1Entry() {
+        const input = document.getElementById('task1-input');
+        const val = input.value.trim();
+        if(!val) return;
+        
+        const list = document.getElementById('task1-list');
+        const li = document.createElement('li');
+        li.style.background = 'var(--box-fill-light)';
+        li.style.padding = '10px 15px';
+        li.style.marginBottom = '8px';
+        li.style.borderRadius = '8px';
+        li.style.display = 'flex';
+        li.style.justifyContent = 'space-between';
+        li.style.alignItems = 'center';
+        li.style.border = '1px solid var(--border-accent)';
+        
+        const textSpan = document.createElement('span');
+        textSpan.textContent = val;
+        
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Remove';
+        delBtn.style.background = '#b91c1c';
+        delBtn.style.color = 'white';
+        delBtn.style.border = 'none';
+        delBtn.style.borderRadius = '5px';
+        delBtn.style.padding = '5px 10px';
+        delBtn.style.cursor = 'pointer';
+        delBtn.onclick = function() { li.remove(); };
+        
+        li.appendChild(textSpan);
+        li.appendChild(delBtn);
+        list.appendChild(li);
+        
+        input.value = ''; // clear input
+    }
+
+    // Allow pressing Enter to submit task 1 entry
+    document.getElementById('task1-input').addEventListener('keypress', function(e) { 
+        if(e.key === 'Enter') addTask1Entry(); 
+    });
+
+    // Task 2 Reveal Logic
+    let task2RevealedCount = 0;
+    function revealNextTask2Answer() {
+        const answers = document.querySelectorAll('.task2-answer-item'); 
+        
+        if (task2RevealedCount < answers.length) {
+            const item = answers[task2RevealedCount];
+            item.textContent = item.getAttribute('data-answer');
+            item.classList.remove('task2-blank');
+            item.classList.add('task2-revealed');
+            task2RevealedCount++;
+            
+            if (task2RevealedCount >= answers.length) {
+                document.getElementById('task2-reveal-btn').style.display = 'none';
+                document.getElementById('task2-reset-btn').style.display = 'inline-block';
+            }
+        }
+    }
+
+    function resetTask2Answers() {
+        const answers = document.querySelectorAll('.task2-answer-item');
+        answers.forEach(item => {
+            item.textContent = '________';
+            item.classList.remove('task2-revealed');
+            item.classList.add('task2-blank');
+        });
+        task2RevealedCount = 0;
+        document.getElementById('task2-reveal-btn').style.display = 'inline-block';
+        document.getElementById('task2-reset-btn').style.display = 'none';
+    }
+
+    // Auto-Grading Logic
+    function checkAnswer(selectElement) {
+        const correctAns = selectElement.getAttribute('data-answer');
+        selectElement.classList.remove('correct', 'incorrect');
+        if (selectElement.value === "") return;
+        if (selectElement.value === correctAns) {
+            selectElement.classList.add('correct');
+        } else {
+            selectElement.classList.add('incorrect');
+        }
+    }
+
+    // Timer Logic
+    let countdown;
+    let timeLeft = 0;
+    let isRunning = false;
+    const display = document.getElementById('timer-display');
+
+    function updateDisplay() {
+        let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+        let s = (timeLeft % 60).toString().padStart(2, '0');
+        display.textContent = `${m}:${s}`;
+    }
+
+    function setTimer(seconds) {
+        timeLeft += seconds;
+        updateDisplay();
+    }
+
+    function playChime() {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function beep(time) {
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + time);
+            osc.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + time);
+            osc.stop(audioCtx.currentTime + time + 0.15);
+        }
+        beep(0);
+        beep(0.3);
+    }
+
+    function startTimer() {
+        if(isRunning || timeLeft <= 0) return;
+        isRunning = true;
+        countdown = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+            if(timeLeft === 60) playChime();
+            if(timeLeft <= 0) {
+                clearInterval(countdown);
+                isRunning = false;
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        clearInterval(countdown);
+        isRunning = false;
+    }
+
+    function resetTimer() {
+        clearInterval(countdown);
+        isRunning = false;
+        timeLeft = 0;
+        updateDisplay();
+    }
+</script>
+</body>
+</html>

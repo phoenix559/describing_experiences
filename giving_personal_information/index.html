@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giving Personal Information - Student View</title>
+<style>
+    :root {
+        --box-fill: #CCA192;
+        --box-fill-light: #FAF3F1;
+        --border-accent: #A47D6F;
+        --ada-text: #523227;
+        --bg-page: #FCF9F8;
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: var(--bg-page);
+        color: var(--ada-text);
+        margin: 0;
+        padding: 0;
+    }
+    #lock-screen {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: var(--ada-text); color: white; 
+        display: flex; flex-direction: column; align-items: center; 
+        justify-content: center; text-align: center; padding: 20px; 
+        z-index: 9999; box-sizing: border-box;
+    }
+    .btn-primary {
+        background-color: var(--border-accent); color: white; 
+        padding: 12px 30px; border: none; border-radius: 8px; 
+        font-weight: bold; cursor: pointer; font-size: 16px;
+        transition: background-color 0.2s;
+    }
+    .btn-primary:hover {
+        background-color: #38221B;
+    }
+    #main-content {
+        display: none; padding: 20px; max-width: 900px; margin: 0 auto;
+    }
+    header {
+        background: var(--box-fill-light); border: 1px solid var(--border-accent);
+        border-radius: 15px; padding: 20px; text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;
+    }
+    header h1 { margin: 0 0 10px 0; color: var(--ada-text); }
+    header p { margin: 0; font-weight: bold; }
+    .section {
+        background: white; border: 1px solid var(--border-accent);
+        border-radius: 15px; padding: 20px; margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    h2 { color: var(--border-accent); border-bottom: 2px solid var(--box-fill-light); padding-bottom: 5px; }
+    
+    /* Text Message Styling */
+    .dialogue { display: flex; flex-direction: column; gap: 10px; margin-top: 15px;}
+    .msg { max-width: 70%; padding: 12px 16px; border-radius: 20px; display: flex; align-items: center; gap: 10px; }
+    .msg.speaker-a { background: var(--box-fill); color: white; align-self: flex-start; border-bottom-left-radius: 5px; }
+    .msg.speaker-b { background: var(--box-fill-light); color: var(--ada-text); align-self: flex-end; border-bottom-right-radius: 5px; border: 1px solid var(--border-accent);}
+    .avatar { font-size: 1.5rem; }
+</style>
+</head>
+<body>
+
+<div id="lock-screen">
+    <h1 style="margin: 0 0 5px 0; font-size: 2.5rem; text-align: center; color: #FFFFFF;">Giving Personal Information</h1>
+    <h2 style="margin: 0 0 5px 0; font-size: 1.2rem; font-weight: normal; color: var(--box-fill);">ESL 404/412 Interactive Lesson</h2>
+    <p style="margin: 0 0 25px 0; font-size: 0.9rem; font-style: italic; color: var(--box-fill-light);">Student View</p>
+    <p style="margin-bottom: 20px; color: #FFFFFF;">Please enter the class access code to begin:</p>
+    <input type="password" id="pin-input" placeholder="Passcode" style="padding: 12px; border-radius: 8px; border: none; font-size: 18px; width: 200px; text-align: center; margin-bottom: 20px; color: #333;">
+    <button onclick="checkPin()" class="btn-primary">Enter Lesson</button>
+    <p id="pin-error" style="color: var(--box-fill); margin-top: 15px; display: none;">Incorrect code. Please try again.</p>
+</div>
+
+<div id="main-content">
+    <header>
+        <h1>Giving Personal Information</h1>
+        <p>Level: High Beg | ESL 404/412</p>
+    </header>
+
+    <div class="section">
+        <h2>Warm-Up: Birthday vs. Birthdate</h2>
+        <p>Your <strong>birthday</strong> is the anniversary of your birth (e.g., May 20). Your <strong>birthdate</strong> (or date of birth) is the day and year when you were born (e.g., May 20, 1983).</p>
+        <p><em>Brainstorming Activity:</em> Find the birthdate of one famous person and share it.</p>
+    </div>
+
+    <div class="section">
+        <h2>Common Questions</h2>
+        <p>Listen to your teacher say these common questions. Practice saying them out loud.</p>
+        <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+            <source src="Giving-Personal-Information- Listen and Repeat.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <ul style="line-height: 1.8; font-size: 1.1rem; color: var(--ada-text);">
+            <li>Can I get some information/info?</li>
+            <li>What's your first name?</li>
+            <li>What's your last name?</li>
+            <li>Do you have a middle name?</li>
+            <li>What's your home number?</li>
+            <li>What's your cell number?</li>
+            <li>What's your work number?</li>
+            <li>What's your birthdate?</li>
+            <li>What's your email address?</li>
+            <li>Is this your current mailing address?</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Dialogue Practice</h2>
+        <p>Practice with a partner. Then change the personal information to your own information.</p>
+        
+        <!-- Dialogue 1 -->
+        <div style="margin-bottom: 30px;">
+            <h3 style="margin-top: 0; color: var(--border-accent);">Dialogue 1: Names</h3>
+            <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+                <source src="Giving-Personal-Information-1.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="dialogue">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Can I have your last name, please?</div>
+                <div class="msg speaker-b">It's Williams. W-I-L-L-I-A-M-S. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> And your first name?</div>
+                <div class="msg speaker-b">Corey. C-O-R-E-Y. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Do you have a middle name?</div>
+                <div class="msg speaker-b">No, I don't. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+
+        <!-- Dialogue 2 -->
+        <div style="margin-bottom: 30px;">
+            <h3 style="margin-top: 0; color: var(--border-accent);">Dialogue 2: Phone Numbers & Birthdates</h3>
+            <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+                <source src="Giving-Personal-Information-2.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="dialogue">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Can I have your phone number, please?</div>
+                <div class="msg speaker-b">Sure. It's 555-222-7798. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> 555-222-7798. Is that your home number?</div>
+                <div class="msg speaker-b">That's my cell. I don't have a home phone. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Okay. Do you have a work number?</div>
+                <div class="msg speaker-b">Yes. It's 414-990-4878. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> And your birthdate is May 5, 1987, right?</div>
+                <div class="msg speaker-b">That's correct. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+
+        <!-- Dialogue 3 -->
+        <div style="margin-bottom: 10px;">
+            <h3 style="margin-top: 0; color: var(--border-accent);">Dialogue 3: Addresses</h3>
+            <audio controls style="width: 100%; margin-bottom: 15px; border-radius: 20px;">
+                <source src="Giving-Personal-Information-3.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="dialogue">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Is this your current mailing address?</div>
+                <div class="msg speaker-b">No, we moved. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> What's your new address?</div>
+                <div class="msg speaker-b">My address is 45 Arrow Drive. Unit 88. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Is that in Buffalo?</div>
+                <div class="msg speaker-b">Yes. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> What's your zip code?</div>
+                <div class="msg speaker-b">My zip code is 14215. <span class="avatar">👨🏻</span></div>
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> Great. And is your email address still coreywilliams@mailme.com?</div>
+                <div class="msg speaker-b">That's right. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Correct Info?</h2>
+        <p>Sometimes people already have your information. They may check to make sure it's still correct.</p>
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;">
+            <div class="dialogue" style="margin-top: 0;">
+                <div class="msg speaker-a"><span class="avatar">👩🏽</span> And your birthdate is May 5, 1987, right?</div>
+                <div class="msg speaker-b">That's correct. <span class="avatar">👨🏻</span></div>
+            </div>
+        </div>
+        <p>You can answer in a few ways:</p>
+        <ul style="color: var(--ada-text); font-weight: bold;">
+            <li>That's right.</li>
+            <li>Right.</li>
+            <li>That's correct.</li>
+            <li>You got it.</li>
+            <li>Yes.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Lock Screen Logic
+    function checkPin() {
+        const pin = document.getElementById('pin-input').value;
+        if(pin === '412') {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            document.getElementById('pin-error').style.display = 'block';
+            document.getElementById('pin-input').value = ''; // clear input on failure
+        }
+    }
+
+    // Allow pressing Enter to submit passcode
+    document.getElementById('pin-input').addEventListener('keypress', function(e) { 
+        if(e.key === 'Enter') checkPin(); 
+    });
+</script>
+</body>
+</html>
